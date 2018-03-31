@@ -2,7 +2,7 @@
 MDS, from Mark Schmidt's lecture
 
 ### Maximum Likelihood Estimation
-Maximum likelihood estimation (MLE) is the procedure of finding the values of $\Theta$ for a given data set which make the likelihood function a maximum [1]. Here the likelihood function is simply the probability that the event leading to the given data happens. Taking coin flipping as an example, we have observed three heads and two tails in five trails of the same coin. The number of heads in a given number of trails forms a binomial distribution with probability $p$. Here $p$ is the probability of head in a toss. We are not sure if the coin is fair or not. However, we want to estimate the most likely $p$ for this coin based on our observations. MLE can help here. The procedure is the following:
+Maximum likelihood estimation (MLE) is the procedure of finding the values of $\Theta$ for a given data set which make the likelihood function a maximum [1]. Here the likelihood function is simply the probability that the event leading to the given data happens. Taking coin flipping as an example, we have observed three heads and two tails in five trials of the same coin. The number of heads in a given number of trials forms a binomial distribution with probability $p$. Here $p$ is the probability of a head in a toss. We are not sure if the coin is fair or not. However, we want to estimate the most likely $p$ for this coin based on our observations. MLE can help here. The procedure is the following:
 
 * Calculate the likelihood as a function distribution parameter $\Theta$. Here $\Theta$ is $p$ in the binomial distribution case
 $$\mathcal{L}(p) = (_{5}^{3})p^3(1-p)^2 = 10p^3(1-p)^2$$
@@ -11,11 +11,11 @@ $$\mathcal{L}(p) = (_{5}^{3})p^3(1-p)^2 = 10p^3(1-p)^2$$
 $$\displaystyle{\mathrm{argmin}_{p}}-\log(\mathcal{L}(p)).$$
 The benefits of using the negative logarithm are
   - avoiding overflow or underflow
-  - changing the product of probabilities to the sum of probabilities.
+  - changing the product of probabilities to the sum of log probabilities.
 
 * Find the $p$ that minimize $-\log(\mathcal{L}(p))$.
 
-The solution is $\sqrt{\frac{3}{5}}$. It seems not like a fari coin. (For a more careful conclusion, we need to estimate the confidence interval.)
+The solution is $\sqrt{\frac{3}{5}}$. It seems not like a fair coin. (For a more careful conclusion, we need to estimate the confidence interval.)
 
 
 #### MLE for regression
@@ -34,9 +34,9 @@ The MLE objective function is
 $$\mathrm{argmin}_{w} -\log(\mathcal{L}(D|w)) = \mathrm{argmin}_{w}-\sum_{i}\log(f(y_i|w,x_i)).$$
 
 ##### Linear regression
-In linear regression, we assumes the a linear relationship with an error term
+In linear regression, we assume a linear relationship with an error term
 $$Y = WX + \xi,$$
-where the intercept term is included by adding a dummy variable in $X$. $\xi$ follows a Gaussian distribution.
+where the intercept term is included by adding a dummy variable to $X$. $\xi$ follows a Gaussian distribution.
 
 So the response variable follows a Gaussian distribution
 $$Y \sim N(\Theta = WX, \sigma) = \frac{1}{\sqrt{2\pi \sigma^2}}e^{-\frac{(Y-WX)^2}{2\sigma^2}},$$
@@ -86,7 +86,7 @@ The problem setup is the following:
 * We have observed some data.
 * We make an assumption on the distribution of the response variable.
 * We make an assumption on the prior distribution of parameter $w$ based on our knowledge.
-* We want to find the parameters $w$ that corresponds to the maximum of the posterior given the observed data.
+* We want to find $w$ that corresponds to the maximum of the posterior given the observed data.
 
 In the general case, let $f(Y|w, X)$ be the probability distribution for the response variable and $g(w)$ be the prior distribution of parameter $w$. Given a set of observations (a sample) $D$ with $n$ pairs of $[y_i, x_i]$, then the posterior is
 $$P(w|D) = \prod_{i}f(y_i|w, x_i)g(w).$$ The negative logarithm is
@@ -109,12 +109,12 @@ So MAP for linear regression with a Gaussian prior becomes a problem to find $w$
 $$\min\sum_{i}(y_i-w^Tx_i)^2 + \lambda w^2$$
 where $\lambda = \frac{\sigma^2}{\sigma_w^2}$. Thus the origin of object (loss) function for linear regression with $L_2$ regularization is MAP estimation of $w$ with a Gaussian prior.
 
-The question is how to choose the hyperparameter $\lambda$. Typically, we choose the $\lambda$ using cross-validation. In this sense, the hyperparameter is detemined by data.   
+The question is how to choose the hyperparameter $\lambda$. Typically, we choose the $\lambda$ using cross-validation. In this sense, the hyperparameter is determined by data.   
 
 #### MAP for robust regression with a Laplace prior
 We still have the model
 $$Y = WX + \xi,$$
-where the intercept is taken into account by including as an dummy variable in $X$. Here the noise $\xi$ is from a Laplace distribution [3] instead of a Gaussian distribution. Laplace distribution is a _heavy tail distribution_, so extreme values away from the mean are more likely than Gaussian distribution. Outliers can be taken care more appropriately in this distribution.
+where the intercept is taken into account by including as a dummy variable in $X$. Here the noise $\xi$ is from a Laplace distribution [3] instead of a Gaussian distribution. Laplace distribution is a _heavy tail distribution_, so extreme values away from the mean are more likely than Gaussian distribution. Outliers can be taken care more appropriately in this distribution.
 
 With these assumption, $Y$ is given by
 $$Y \sim \mathrm{Laplace}(\theta = WX, b) = \frac{1}{2b}e^{-\frac{|Y-WX|}{b}},$$
